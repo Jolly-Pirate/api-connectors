@@ -214,6 +214,13 @@ class BybitWebsocket:
         if 'wallet' not in self.data:
             self.data['wallet'] = []
 
+    def subscribe_multiprivate(self, subscriptions: list):
+        param = {'op': 'subscribe', 'args': subscriptions}
+        self.ws.send(json.dumps(param))
+        for x in subscriptions:
+            if x not in self.data:
+                self.data[x] = []
+
     def get_kline(self, symbol, interval):
         if self.is_inverse(symbol):
             topic_name = 'klineV2.' + interval + '.' + symbol
