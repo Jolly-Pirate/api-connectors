@@ -110,6 +110,12 @@ class BybitWebsocket:
             if 'ret_msg' in message and message["ret_msg"] == 'pong':
                 self.data["pong"].append("PING success")
 
+        if 'success' in message and message["success"] == False:
+            if 'request' in message and not message["request"]["op"] == 'auth':
+                self.auth = False
+                self.logger.info(message["ret_msg"])
+                self.logger.info("Authentication failed.")
+
         if 'topic' in message:
             self.data[message["topic"]].append(message)
             if len(self.data[message["topic"]]) > BybitWebsocket.MAX_DATA_CAPACITY:
