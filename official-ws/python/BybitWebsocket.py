@@ -82,6 +82,11 @@ class BybitWebsocket:
         if self.api_key and self.api_secret:
             self.__do_auth()
 
+    def isConnected(self):
+        if not self.ws.sock or not self.ws.sock.connected:
+            return False
+        return True
+
     def generate_signature(self, expires):
         """Generate a request signature."""
         _val = 'GET/realtime' + expires
